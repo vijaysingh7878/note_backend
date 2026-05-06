@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use("/api/user",userRouter);
 app.use("/api/note",noteRouter);
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.status(200).json({ message: "API is running" });
 });
 
