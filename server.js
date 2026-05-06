@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./router/userRoute.js";
+import noteRouter from "./router/noteRoute.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 
 app.use("/api/user",userRouter);
+app.use("/api/note",noteRouter);
 
 mongoose
   .connect(process.env.MONGO_URL)
