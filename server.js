@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRouter from "./router/userRoute.js";
 
 dotenv.config();
 
@@ -12,10 +13,13 @@ app.use(
   cors({
     origin: "*", 
   }),
-);
+); 
 
 
 app.use(express.json());
+
+
+app.use("/api/user",userRouter);
 
 mongoose
   .connect(process.env.MONGO_URL)
