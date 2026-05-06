@@ -22,6 +22,9 @@ app.use(express.json());
 
 app.use("/api/user",userRouter);
 app.use("/api/note",noteRouter);
+app.get("/api", (req, res) => {
+  res.status(200).json({ message: "API is running" });
+});
 
 mongoose
   .connect(process.env.MONGO_URL)
