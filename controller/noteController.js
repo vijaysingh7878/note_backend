@@ -28,7 +28,7 @@ export const getNotes = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const notes = await Note.find({ userId });
+   const notes = await Note.find({ userId }).sort({ createdAt: -1 }); 
     res.status(200).json({ message: "Notes retrieved successfully", notes });
   } catch (error) {
     res.status(500).json({ message: error.message });

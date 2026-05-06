@@ -18,7 +18,7 @@ export const createUser = async (req, res) => {
     const payload = { name, email, password: hashPassword };
     const user = new User(payload);
     await user.save();
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "Signup successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -35,9 +35,12 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    
     const isMatch = await bcrypt.compare(password, user.password);
+
+    
     if (!isMatch) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "Invalid Password. Please enter the correct password.",
       });
     }
@@ -45,6 +48,7 @@ export const loginUser = async (req, res) => {
     const token = generateJwtToken({ userId: user._id, email: user.email });
     res.status(200).json({ message: "Login successful", userData, token });
   } catch (error) {
+    
     res.status(500).json({ message: error.message });
   }
 };
