@@ -23,13 +23,27 @@ export const createNote = async (req, res) => {
 export const getNotes = async (req, res) => {
   try {
     const userId = req.user.userId;
+    const { search = "" } = req.query;
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-   const notes = await Note.find({ userId }).sort({ createdAt: -1 }); 
-    res.status(200).json({ message: "Notes retrieved successfully", notes });
+
+    let query = { userId };
+
+  
+    if (search.trim() !== "") {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    const notes = await Note.find(query).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: "Notes retrieved successfully",
+      notes,
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
