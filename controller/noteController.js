@@ -23,7 +23,7 @@ export const createNote = async (req, res) => {
 export const getNotes = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { search = "" } = req.query;
+    const { search = "", sortType } = req.query;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -32,18 +32,18 @@ export const getNotes = async (req, res) => {
 
     let query = { userId };
 
-  
     if (search.trim() !== "") {
       query.title = { $regex: search, $options: "i" };
     }
 
-    const notes = await Note.find(query).sort({ createdAt: -1 });
+    const notes = await Note.find(query).sort({
+      createdAt: sortType === "new" ? -1 : 1,
+    });
 
     res.status(200).json({
       message: "Notes retrieved successfully",
       notes,
     });
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
